@@ -1,20 +1,21 @@
-//@version=4
-study("OPEX", overlay=true)
-opex = input(title="Monthly Equity, Index Expiration (OPEX)", type=input.bool, defval=true)
-quarterly = input(title="Quarterly Index Expiration (Q)", type=input.bool, defval=true)
-vixex = input(title="Monthly VIX Expiration (VIXEX/VIXPERATION)", type=input.bool, defval=true)
-opex_line_color = input(title="OPEX Line Color", type=input.color, defval=color.new(color.orange, 30))
-opex_label_color = input(title="OPEX Label Color", type=input.color, defval=color.new(color.orange, 30))
-opex_label_txt_color = input(title="OPEX Label Text Color", type=input.color, defval=color.new(color.white, 0))
-quarterly_line_color = input(title="Quarterly Line Color", type=input.color, defval=color.new(color.red, 30))
-quarterly_label_color = input(title="Quarterly Label Color", type=input.color, defval=color.new(color.red, 30))
-quarterly_label_txt_color = input(title="Quarterly Label Text Color", type=input.color, defval=color.new(color.white, 0))
-vixex_line_color = input(title="VIXEX Line Color", type=input.color, defval=color.new(color.purple, 30))
-vixex_label_color = input(title="VIXEX Label Color", type=input.color, defval=color.new(color.purple, 30))
-vixex_label_txt_color = input(title="VIXEX Label Text Color", type=input.color, defval=color.new(color.white, 0))
+//@version=5
+indicator('OPEX', overlay=true)
+opex = input(title='Monthly Equity, Index Expiration (OPEX)', defval=true)
+quarterly = input(title='Quarterly Index Expiration (Q)', defval=true)
+vixex = input(title='Monthly VIX Expiration (VIXEX/VIXPERATION)', defval=true)
+opex_line_color = input(title='OPEX Line Color', defval=color.new(color.orange, 30))
+opex_label_color = input(title='OPEX Label Color', defval=color.new(color.orange, 30))
+opex_label_txt_color = input(title='OPEX Label Text Color', defval=color.new(color.white, 0))
+quarterly_line_color = input(title='Quarterly Line Color', defval=color.new(color.red, 30))
+quarterly_label_color = input(title='Quarterly Label Color', defval=color.new(color.red, 30))
+quarterly_label_txt_color = input(title='Quarterly Label Text Color', defval=color.new(color.white, 0))
+vixex_line_color = input(title='VIXEX Line Color', defval=color.new(color.purple, 30))
+vixex_label_color = input(title='VIXEX Label Color', defval=color.new(color.purple, 30))
+vixex_label_txt_color = input(title='VIXEX Label Text Color', defval=color.new(color.white, 0))
 vline(TimeIndex, txt, line_color, label_color, label_txt_color) =>
-    return = line.new(TimeIndex, low, TimeIndex, high, xloc.bar_time, extend.both, line_color, line.style_dotted, 1)
-    l = label.new(TimeIndex, high, txt, xloc.bar_time, yloc.abovebar, label_color, label.style_label_down,label_txt_color, size.normal, text.align_left, txt)
+    return_1 = line.new(TimeIndex, low, TimeIndex, high, xloc.bar_time, extend.both, line_color, line.style_dotted, 1)
+    l = label.new(TimeIndex, high, txt, xloc.bar_time, yloc.abovebar, label_color, label.style_label_down, label_txt_color, size.normal, text.align_left, txt)
+    l
 
 
 //MONTHLY OPEX DATES
@@ -92,13 +93,13 @@ array.push(dates_vixex, timestamp(syminfo.timezone, 2022, 11, 16, timeframe.isdw
 array.push(dates_vixex, timestamp(syminfo.timezone, 2022, 12, 21, timeframe.isdwm ? 0 : 09, 00, 00))
 
 if opex == true
-    for i = 0 to array.size(dates_opex) - 1
-        vline(array.get(dates_opex, i), "OPEX", opex_line_color, opex_label_color, opex_label_txt_color)
-        
+    for i = 0 to array.size(dates_opex) - 1 by 1
+        vline(array.get(dates_opex, i), 'OPEX', opex_line_color, opex_label_color, opex_label_txt_color)
+
 if quarterly == true
-    for i = 0 to array.size(dates_quarterly) - 1
-        vline(array.get(dates_quarterly, i), "Q", quarterly_line_color, quarterly_label_color, quarterly_label_txt_color)
-        
+    for i = 0 to array.size(dates_quarterly) - 1 by 1
+        vline(array.get(dates_quarterly, i), 'Q', quarterly_line_color, quarterly_label_color, quarterly_label_txt_color)
+
 if vixex == true
-    for i = 0 to array.size(dates_vixex) - 1
-        vline(array.get(dates_vixex, i), "VIXEX",vixex_line_color, vixex_label_color, vixex_label_txt_color)
+    for i = 0 to array.size(dates_vixex) - 1 by 1
+        vline(array.get(dates_vixex, i), 'VIXEX', vixex_line_color, vixex_label_color, vixex_label_txt_color)
