@@ -3,7 +3,7 @@ indicator('OPEX', overlay=true)
 opex = input(title='Monthly Equity, Index Expiration (OPEX)', defval=true)
 quarterly = input(title='Quarterly Index Expiration (Q)', defval=true)
 spx_roll = input(title='Quarterly SPX Roll (R)', defval=true)
-vixex = input(title='Monthly VIX Expiration (VIXEX/VIXPERATION)', defval=true)
+vixex = input(title='Monthly VIX Expiration (VIXEX/VIXPERATION)', defval=false)
 
 opex_line_color = input(title='OPEX Line Color', defval=color.new(color.orange, 30))
 opex_label_color = input(title='OPEX Label Color', defval=color.new(color.orange, 30))
