@@ -2,16 +2,25 @@
 indicator('OPEX', overlay=true)
 opex = input(title='Monthly Equity, Index Expiration (OPEX)', defval=true)
 quarterly = input(title='Quarterly Index Expiration (Q)', defval=true)
+spx_roll = input(title='Quarterly SPX Roll (R)', defval=true)
 vixex = input(title='Monthly VIX Expiration (VIXEX/VIXPERATION)', defval=true)
+
 opex_line_color = input(title='OPEX Line Color', defval=color.new(color.orange, 30))
 opex_label_color = input(title='OPEX Label Color', defval=color.new(color.orange, 30))
 opex_label_txt_color = input(title='OPEX Label Text Color', defval=color.new(color.white, 0))
+
 quarterly_line_color = input(title='Quarterly Line Color', defval=color.new(color.red, 30))
 quarterly_label_color = input(title='Quarterly Label Color', defval=color.new(color.red, 30))
 quarterly_label_txt_color = input(title='Quarterly Label Text Color', defval=color.new(color.white, 0))
+
+spx_roll_line_color = input(title='SPX Roll Line Color', defval=color.new(color.green, 30))
+spx_roll_label_color = input(title='SPX Roll Label Color', defval=color.new(color.green, 30))
+spx_roll_label_txt_color = input(title='SPX Roll Label Text Color', defval=color.new(color.white, 0))
+
 vixex_line_color = input(title='VIXEX Line Color', defval=color.new(color.purple, 30))
 vixex_label_color = input(title='VIXEX Label Color', defval=color.new(color.purple, 30))
 vixex_label_txt_color = input(title='VIXEX Label Text Color', defval=color.new(color.white, 0))
+
 vline(TimeIndex, txt, line_color, label_color, label_txt_color) =>
     return_1 = line.new(TimeIndex, low, TimeIndex, high, xloc.bar_time, extend.both, line_color, line.style_dotted, 1)
     l = label.new(TimeIndex, high, txt, xloc.bar_time, yloc.abovebar, label_color, label.style_label_down, label_txt_color, size.normal, text.align_left, txt)
@@ -92,6 +101,20 @@ array.push(dates_vixex, timestamp(syminfo.timezone, 2022, 10, 19, timeframe.isdw
 array.push(dates_vixex, timestamp(syminfo.timezone, 2022, 11, 16, timeframe.isdwm ? 0 : 09, 00, 00))
 array.push(dates_vixex, timestamp(syminfo.timezone, 2022, 12, 21, timeframe.isdwm ? 0 : 09, 00, 00))
 
+//QUAETERLY SPX Roll Dates
+dates_spx_roll = array.new_int(0, timestamp(syminfo.timezone, 2020, 03, 12, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2020, 06, 11, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2020, 09, 10, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2020, 12, 10, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2021, 03, 11, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2021, 06, 10, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2021, 09, 09, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2021, 12, 09, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2022, 03, 10, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2022, 06, 09, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2022, 09, 08, timeframe.isdwm ? 0 : 09, 00, 00))
+array.push(dates_spx_roll, timestamp(syminfo.timezone, 2022, 12, 08, timeframe.isdwm ? 0 : 09, 00, 00))
+
 if opex == true
     for i = 0 to array.size(dates_opex) - 1 by 1
         vline(array.get(dates_opex, i), 'OPEX', opex_line_color, opex_label_color, opex_label_txt_color)
@@ -103,3 +126,7 @@ if quarterly == true
 if vixex == true
     for i = 0 to array.size(dates_vixex) - 1 by 1
         vline(array.get(dates_vixex, i), 'VIXEX', vixex_line_color, vixex_label_color, vixex_label_txt_color)
+
+if spx_roll == true
+    for i = 0 to array.size(dates_spx_roll) - 1 by 1
+        vline(array.get(dates_spx_roll, i), 'R', spx_roll_line_color, spx_roll_label_color, spx_roll_label_txt_color)
